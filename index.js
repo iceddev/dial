@@ -6,6 +6,7 @@ var SSDP = require('node-ssdp');
 var parser = require('xml2json');
 var rest = require('rest');
 var defaultRequest = require('rest/interceptor/defaultRequest');
+var mime = require('rest/interceptor/mime');
 
 function Dial(){
   if(!(this instanceof Dial)) return new Dial();
@@ -43,8 +44,7 @@ function Dial(){
       }
     });
 
-
-    var client = self.client = rest
+    self.client = rest
       .chain(defaultRequest, {
         headers: {
           'Host': self.host
@@ -77,11 +77,58 @@ Dial.prototype.deviceDescription = function(url){
       object: true
     });
 
+    // TODO: lowercase the header key
     self.applicationUrl = resp.headers['Application-Url'];
 
     self.emit('device', description);
   }, function(err){
+    // TODO: error
+  });
+};
 
+Dial.prototype.launch = function(applicationName, data, cb){
+  var client = this.client.chain(mime, { mime: 'application/x-www-form-urlencoded.js' });
+
+  this.applicationResourceUrl = this.applicationUrl + applicationName;
+
+  console.log(this.applicationResourceUrl);
+
+  return client({
+    path: this.applicationResourceUrl,
+    method: 'POST',
+    entity: data
+  }).then(function(resp){
+    if(typeof cb === 'function'){
+      cb(null, resp);
+    } else {
+      return resp;
+    }
+  });
+};
+
+Dial.prototype.appInfo = function(applicationResourceUrl, cb){
+  if(typeof applicationResourceUrl === 'function' && typeof cb !== 'function'){
+    // juggle callback
+    cb = applicationResourceUrl;
+  }
+  if(typeof applicationResourceUrl !== 'string'){
+    // use applicationResourceUrl of object if one not provided
+    applicationResourceUrl = this.applicationResourceUrl;
+  }
+  return this.client({
+    path: applicationResourceUrl
+  }).then(function(resp){
+    var applicationInfo = parser.toJson(resp.entity, {
+      object: true
+    });
+
+    if(typeof cb === 'function'){
+      cb(null, applicationUrl);
+    } else {
+      return applicationInfo;
+    }
+  }, function(err){
+    // TODO: error
   });
 };
 
