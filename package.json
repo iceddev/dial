@@ -1,6 +1,6 @@
 {
   "name": "dial",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "DIAL (DIscovery And Launch) protocol module",
   "main": "index.js",
   "scripts": {
