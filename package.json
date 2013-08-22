@@ -1,6 +1,6 @@
 {
   "name": "dial",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "DIAL (DIscovery And Launch) protocol module",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,7 @@
     "url": "https://github.com/iceddev/dial/issues"
   },
   "dependencies": {
-    "node-ssdp": "0.0.2",
+    "node-ssdp": "0.1.1",
     "rest": "~0.9.3",
     "xml2json": "~0.3.2"
   }
