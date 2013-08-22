@@ -11,7 +11,7 @@ function Dial(){
 
   EventEmitter.call(self);
 
-  var ssdp = new SSDP({
+  var ssdp = this.ssdp = new SSDP({
     log: false
   });
 
