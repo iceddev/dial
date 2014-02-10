@@ -22,7 +22,7 @@
     "url": "https://github.com/iceddev/dial/issues"
   },
   "dependencies": {
-    "node-ssdp": "0.1.1",
+    "node-ssdp": "0.2.0",
     "rest": "~0.9.3",
     "xml2json": "~0.3.2"
   }
